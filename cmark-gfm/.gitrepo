@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/github/cmark-gfm
+	branch = master
+	commit = 587a12bb54d95ac37241377e6ddc93ea0e45439b
+	parent = 519cd265813eab70e12d9c32c46fd5c7a83f7925
+	method = merge
+	cmdver = 0.4.6
