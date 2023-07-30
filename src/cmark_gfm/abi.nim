@@ -28,8 +28,10 @@ type
     Cmarknodeemph = 49159, Cmarknodestrong = 49160, Cmarknodelink = 49161,
     Cmarknodeimage = 49162, Cmarknodefootnotereference = 49163
 
-  enumcmarklisttype* {.size: sizeof(cuint).} = enum
-    Cmarknolist = 0, Cmarkbulletlist = 1, Cmarkorderedlist = 2
+  ListType* {.size: sizeof(cuint).} = enum
+    ltNoList
+    ltBulletList
+    ltOrderedList
 
   DelimType* {.size: sizeof(cuint).} = enum
     dtNoDeLim
@@ -194,11 +196,11 @@ func cmarkNodeSetLiteral*(node: NodePtr,
                           content: cstring): cint {.
     importc: "cmark_node_set_literal".}
 
-func cmarkNodeGetListType*(node: NodePtr): enumcmarklisttype {.
+func cmarkNodeGetListType*(node: NodePtr): ListType {.
     importc: "cmark_node_get_list_type".}
 
 func cmarkNodeSetListType*(node: NodePtr,
-                           typearg: enumcmarklisttype): cint {.
+                           typearg: ListType): cint {.
     importc: "cmark_node_set_list_type".}
 
 func cmarkNodeGetListDelim*(node: NodePtr): DelimType {.
