@@ -13,6 +13,8 @@ static:
       echo outp
       quit 1
 
+{.passL: libPath.}
+
 type
   enumcmarknodetype* {.size: sizeof(cuint).} = enum
     Cmarknodenone = 0, Cmarknodedocument = 32769, Cmarknodeblockquote = 32770,
