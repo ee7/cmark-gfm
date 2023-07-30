@@ -1,5 +1,17 @@
+import std/os
 from system/ansi_c import c_free
 export c_free
+
+const cmarkDir = currentSourcePath().parentDir().parentDir().parentDir() / "cmark-gfm"
+const libPath = cmarkDir / "build" / "src" / "libcmark-gfm.a"
+
+static:
+  if not fileExists(libPath):
+    echo "running make..."
+    let (outp, errC) = gorgeEx("make --directory=" & cmarkDir)
+    if errC != 0:
+      echo outp
+      quit 1
 
 type
   enumcmarknodetype* {.size: sizeof(cuint).} = enum
