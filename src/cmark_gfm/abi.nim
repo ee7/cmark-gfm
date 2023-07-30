@@ -16,17 +16,34 @@ static:
 {.passL: libPath.}
 
 type
-  enumcmarknodetype* {.size: sizeof(cuint).} = enum
-    Cmarknodenone = 0, Cmarknodedocument = 32769, Cmarknodeblockquote = 32770,
-    Cmarknodelist = 32771, Cmarknodeitem = 32772, Cmarknodecodeblock = 32773,
-    Cmarknodehtmlblock = 32774, Cmarknodecustomblock = 32775,
-    Cmarknodeparagraph = 32776, Cmarknodeheading = 32777,
-    Cmarknodethematicbreak = 32778, Cmarknodefootnotedefinition = 32779,
-    Cmarknodetext = 49153, Cmarknodesoftbreak = 49154,
-    Cmarknodelinebreak = 49155, Cmarknodecode = 49156,
-    Cmarknodehtmlinline = 49157, Cmarknodecustominline = 49158,
-    Cmarknodeemph = 49159, Cmarknodestrong = 49160, Cmarknodelink = 49161,
-    Cmarknodeimage = 49162, Cmarknodefootnotereference = 49163
+  NodeType* {.size: sizeof(cuint).} = enum
+    ntNone = 0 ## Error status.
+
+    # Block nodes.
+    ntDocument = 32769
+    ntBlockQuote = 32770
+    ntList = 32771
+    ntItem = 32772
+    ntCodeBlock = 32773
+    ntHtmlBlock = 32774
+    ntCustomBlock = 32775
+    ntParagraph = 32776
+    ntHeading = 32777
+    ntThematicBreak = 32778
+    ntFootnoteDefinition = 32779
+
+    # Inline nodes.
+    ntText = 49153
+    ntSoftBreak = 49154
+    ntLineBreak = 49155
+    ntCode = 49156
+    ntHtmlInline = 49157
+    ntCustomInline = 49158
+    ntEmph = 49159
+    ntStrong = 49160
+    ntLink = 49161
+    ntImage = 49162
+    ntFootnoteReference = 49163
 
   ListType* {.size: sizeof(cuint).} = enum
     ltNoList
@@ -71,8 +88,8 @@ const
   CmarkOptDefault* = 0
 
 var
-  CmarkNodeLastBlock* {.importc: "CMARK_NODE_LAST_BLOCK".}: enumcmarknodetype
-  CmarkNodeLastInline* {.importc: "CMARK_NODE_LAST_INLINE".}: enumcmarknodetype
+  CmarkNodeLastBlock* {.importc: "CMARK_NODE_LAST_BLOCK".}: NodeType
+  CmarkNodeLastInline* {.importc: "CMARK_NODE_LAST_INLINE".}: NodeType
 
 {.push cdecl, raises: [], gcsafe.}
 
@@ -111,18 +128,18 @@ func cmarkLlistFree*(mem: ptr structcmarkmem,
                      head: ptr structcmarkllist): void {.
     importc: "cmark_llist_free".}
 
-func cmarkNodeNew*(typearg: enumcmarknodetype): NodePtr {.
+func cmarkNodeNew*(typearg: NodeType): NodePtr {.
     importc: "cmark_node_new".}
 
-func cmarkNodeNewWithMem*(typearg: enumcmarknodetype,
+func cmarkNodeNewWithMem*(typearg: NodeType,
                           mem: ptr structcmarkmem): NodePtr {.
     importc: "cmark_node_new_with_mem".}
 
-func cmarkNodeNewWithExt*(typearg: enumcmarknodetype,
+func cmarkNodeNewWithExt*(typearg: NodeType,
                           extension: ptr structcmarksyntaxextension): NodePtr {.
     importc: "cmark_node_new_with_ext".}
 
-func cmarkNodeNewWithMemAndExt*(typearg: enumcmarknodetype,
+func cmarkNodeNewWithMemAndExt*(typearg: NodeType,
                                 mem: ptr structcmarkmem,
                                 extension: ptr structcmarksyntaxextension): NodePtr {.
     importc: "cmark_node_new_with_mem_and_ext".}
@@ -183,7 +200,7 @@ func cmarkNodeSetUserDataFreeFunc*(node: NodePtr,
                                                    a1: pointer): void {.cdecl.}): cint {.
     importc: "cmark_node_set_user_data_free_func".}
 
-func cmarkNodeGetType*(node: NodePtr): enumcmarknodetype {.
+func cmarkNodeGetType*(node: NodePtr): NodeType {.
     importc: "cmark_node_get_type".}
 
 func cmarkNodeGetTypeString*(node: NodePtr): cstring {.
