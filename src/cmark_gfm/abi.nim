@@ -100,297 +100,297 @@ type
   bufsizet* = cint
 
 const
-  Cmarknodetypepresent* = 32768
-  Cmarknodetypemask* = 49152
-  Cmarknodevaluemask* = 16383
-  Cmarkoptdefault* = 0
+  CmarkNodeTypePresent* = 32768
+  CmarkNodeTypeMask* = 49152
+  CmarkNodeValueMask* = 16383
+  CmarkOptDefault* = 0
 
 var
-  Cmarknodelastblock* {.importc: "CMARK_NODE_LAST_BLOCK".}: enumcmarknodetype
-  Cmarknodelastinline* {.importc: "CMARK_NODE_LAST_INLINE".}: enumcmarknodetype
+  CmarkNodeLastBlock* {.importc: "CMARK_NODE_LAST_BLOCK".}: enumcmarknodetype
+  CmarkNodeLastInline* {.importc: "CMARK_NODE_LAST_INLINE".}: enumcmarknodetype
 
-proc cmarknodegetheadinglevel*(node: ptr structcmarknode): cint {.cdecl,
+proc cmarkNodeGetHeadingLevel*(node: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_get_heading_level".}
 
-proc cmarknodesetheadinglevel*(node: ptr structcmarknode; level: cint): cint {.
+proc cmarkNodeSetHeadingLevel*(node: ptr structcmarknode; level: cint): cint {.
     cdecl, importc: "cmark_node_set_heading_level".}
 
-proc cmarkmarkdowntohtml*(text: cstring; len: culong; options: cint): cstring {.
+proc cmarkMarkdownToHtml*(text: cstring; len: culong; options: cint): cstring {.
     cdecl, importc: "cmark_markdown_to_html".}
 
-proc cmarkgetdefaultmemallocator*(): ptr structcmarkmem {.cdecl,
+proc cmarkGetDefaultMemAllocator*(): ptr structcmarkmem {.cdecl,
     importc: "cmark_get_default_mem_allocator".}
 
-proc cmarkgetarenamemallocator*(): ptr structcmarkmem {.cdecl,
+proc cmarkGetArenaMemAllocator*(): ptr structcmarkmem {.cdecl,
     importc: "cmark_get_arena_mem_allocator".}
 
-proc cmarkarenareset*(): void {.cdecl, importc: "cmark_arena_reset".}
+proc cmarkArenaReset*(): void {.cdecl, importc: "cmark_arena_reset".}
 
-proc cmarkllistappend*(mem: ptr structcmarkmem; head: ptr structcmarkllist;
+proc cmarkLlistAppend*(mem: ptr structcmarkmem; head: ptr structcmarkllist;
                        data: pointer): ptr structcmarkllist {.cdecl,
     importc: "cmark_llist_append".}
 
-proc cmarkllistfreefull*(mem: ptr structcmarkmem; head: ptr structcmarkllist;
+proc cmarkLlistFreeFull*(mem: ptr structcmarkmem; head: ptr structcmarkllist;
     freefunc: proc (a0: ptr structcmarkmem; a1: pointer): void {.cdecl.}): void {.
     cdecl, importc: "cmark_llist_free_full".}
 
-proc cmarkllistfree*(mem: ptr structcmarkmem; head: ptr structcmarkllist): void {.
+proc cmarkLlistFree*(mem: ptr structcmarkmem; head: ptr structcmarkllist): void {.
     cdecl, importc: "cmark_llist_free".}
 
-proc cmarknodenew*(typearg: enumcmarknodetype): ptr structcmarknode {.cdecl,
+proc cmarkNodeNew*(typearg: enumcmarknodetype): ptr structcmarknode {.cdecl,
     importc: "cmark_node_new".}
 
-proc cmarknodenewwithmem*(typearg: enumcmarknodetype; mem: ptr structcmarkmem): ptr structcmarknode {.
+proc cmarkNodeNewWithMem*(typearg: enumcmarknodetype; mem: ptr structcmarkmem): ptr structcmarknode {.
     cdecl, importc: "cmark_node_new_with_mem".}
 
-proc cmarknodenewwithext*(typearg: enumcmarknodetype;
+proc cmarkNodeNewWithExt*(typearg: enumcmarknodetype;
                           extension: ptr structcmarksyntaxextension): ptr structcmarknode {.
     cdecl, importc: "cmark_node_new_with_ext".}
 
-proc cmarknodenewwithmemandext*(typearg: enumcmarknodetype;
+proc cmarkNodeNewWithMemAndExt*(typearg: enumcmarknodetype;
                                 mem: ptr structcmarkmem;
                                 extension: ptr structcmarksyntaxextension): ptr structcmarknode {.
     cdecl, importc: "cmark_node_new_with_mem_and_ext".}
 
-proc cmarknodefree*(node: ptr structcmarknode): void {.cdecl,
+proc cmarkNodeFree*(node: ptr structcmarknode): void {.cdecl,
     importc: "cmark_node_free".}
 
-proc cmarknodenext*(node: ptr structcmarknode): ptr structcmarknode {.cdecl,
+proc cmarkNodeNext*(node: ptr structcmarknode): ptr structcmarknode {.cdecl,
     importc: "cmark_node_next".}
 
-proc cmarknodeprevious*(node: ptr structcmarknode): ptr structcmarknode {.cdecl,
+proc cmarkNodePrevious*(node: ptr structcmarknode): ptr structcmarknode {.cdecl,
     importc: "cmark_node_previous".}
 
-proc cmarknodeparent*(node: ptr structcmarknode): ptr structcmarknode {.cdecl,
+proc cmarkNodeParent*(node: ptr structcmarknode): ptr structcmarknode {.cdecl,
     importc: "cmark_node_parent".}
 
-proc cmarknodefirstchild*(node: ptr structcmarknode): ptr structcmarknode {.
+proc cmarkNodeFirstChild*(node: ptr structcmarknode): ptr structcmarknode {.
     cdecl, importc: "cmark_node_first_child".}
 
-proc cmarknodelastchild*(node: ptr structcmarknode): ptr structcmarknode {.
+proc cmarkNodeLastChild*(node: ptr structcmarknode): ptr structcmarknode {.
     cdecl, importc: "cmark_node_last_child".}
 
-proc cmarknodeparentfootnotedef*(node: ptr structcmarknode): ptr structcmarknode {.
+proc cmarkNodeParentFootnoteDef*(node: ptr structcmarknode): ptr structcmarknode {.
     cdecl, importc: "cmark_node_parent_footnote_def".}
 
-proc cmarkiternew*(root: ptr structcmarknode): ptr structcmarkiter {.cdecl,
+proc cmarkIterNew*(root: ptr structcmarknode): ptr structcmarkiter {.cdecl,
     importc: "cmark_iter_new".}
 
-proc cmarkiterfree*(iter: ptr structcmarkiter): void {.cdecl,
+proc cmarkIterFree*(iter: ptr structcmarkiter): void {.cdecl,
     importc: "cmark_iter_free".}
 
-proc cmarkiternext*(iter: ptr structcmarkiter): enumcmarkeventtype {.cdecl,
+proc cmarkIterNext*(iter: ptr structcmarkiter): enumcmarkeventtype {.cdecl,
     importc: "cmark_iter_next".}
 
-proc cmarkitergetnode*(iter: ptr structcmarkiter): ptr structcmarknode {.cdecl,
+proc cmarkIterGetNode*(iter: ptr structcmarkiter): ptr structcmarknode {.cdecl,
     importc: "cmark_iter_get_node".}
 
-proc cmarkitergeteventtype*(iter: ptr structcmarkiter): enumcmarkeventtype {.
+proc cmarkIterGetEventType*(iter: ptr structcmarkiter): enumcmarkeventtype {.
     cdecl, importc: "cmark_iter_get_event_type".}
 
-proc cmarkitergetroot*(iter: ptr structcmarkiter): ptr structcmarknode {.cdecl,
+proc cmarkIterGetRoot*(iter: ptr structcmarkiter): ptr structcmarknode {.cdecl,
     importc: "cmark_iter_get_root".}
 
-proc cmarkiterreset*(iter: ptr structcmarkiter; current: ptr structcmarknode;
+proc cmarkIterReset*(iter: ptr structcmarkiter; current: ptr structcmarknode;
                      eventtype: enumcmarkeventtype): void {.cdecl,
     importc: "cmark_iter_reset".}
 
-proc cmarknodegetuserdata*(node: ptr structcmarknode): pointer {.cdecl,
+proc cmarkNodeGetUserData*(node: ptr structcmarknode): pointer {.cdecl,
     importc: "cmark_node_get_user_data".}
 
-proc cmarknodesetuserdata*(node: ptr structcmarknode; userdata: pointer): cint {.
+proc cmarkNodeSetUserData*(node: ptr structcmarknode; userdata: pointer): cint {.
     cdecl, importc: "cmark_node_set_user_data".}
 
-proc cmarknodesetuserdatafreefunc*(node: ptr structcmarknode; freefunc: proc (
+proc cmarkNodeSetUserDataFreeFunc*(node: ptr structcmarknode; freefunc: proc (
     a0: ptr structcmarkmem; a1: pointer): void {.cdecl.}): cint {.cdecl,
     importc: "cmark_node_set_user_data_free_func".}
 
-proc cmarknodegettype*(node: ptr structcmarknode): enumcmarknodetype {.cdecl,
+proc cmarkNodeGetType*(node: ptr structcmarknode): enumcmarknodetype {.cdecl,
     importc: "cmark_node_get_type".}
 
-proc cmarknodegettypestring*(node: ptr structcmarknode): cstring {.cdecl,
+proc cmarkNodeGetTypeString*(node: ptr structcmarknode): cstring {.cdecl,
     importc: "cmark_node_get_type_string".}
 
-proc cmarknodegetliteral*(node: ptr structcmarknode): cstring {.cdecl,
+proc cmarkNodeGetLiteral*(node: ptr structcmarknode): cstring {.cdecl,
     importc: "cmark_node_get_literal".}
 
-proc cmarknodesetliteral*(node: ptr structcmarknode; content: cstring): cint {.
+proc cmarkNodeSetLiteral*(node: ptr structcmarknode; content: cstring): cint {.
     cdecl, importc: "cmark_node_set_literal".}
 
-proc cmarknodegetlisttype*(node: ptr structcmarknode): enumcmarklisttype {.
+proc cmarkNodeGetListType*(node: ptr structcmarknode): enumcmarklisttype {.
     cdecl, importc: "cmark_node_get_list_type".}
 
-proc cmarknodesetlisttype*(node: ptr structcmarknode; typearg: enumcmarklisttype): cint {.
+proc cmarkNodeSetListType*(node: ptr structcmarknode; typearg: enumcmarklisttype): cint {.
     cdecl, importc: "cmark_node_set_list_type".}
 
-proc cmarknodegetlistdelim*(node: ptr structcmarknode): enumcmarkdelimtype {.
+proc cmarkNodeGetListDelim*(node: ptr structcmarknode): enumcmarkdelimtype {.
     cdecl, importc: "cmark_node_get_list_delim".}
 
-proc cmarknodesetlistdelim*(node: ptr structcmarknode; delim: enumcmarkdelimtype): cint {.
+proc cmarkNodeSetListDelim*(node: ptr structcmarknode; delim: enumcmarkdelimtype): cint {.
     cdecl, importc: "cmark_node_set_list_delim".}
 
-proc cmarknodegetliststart*(node: ptr structcmarknode): cint {.cdecl,
+proc cmarkNodeGetListStart*(node: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_get_list_start".}
 
-proc cmarknodesetliststart*(node: ptr structcmarknode; start: cint): cint {.
+proc cmarkNodeSetListStart*(node: ptr structcmarknode; start: cint): cint {.
     cdecl, importc: "cmark_node_set_list_start".}
 
-proc cmarknodegetlisttight*(node: ptr structcmarknode): cint {.cdecl,
+proc cmarkNodeGetListTight*(node: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_get_list_tight".}
 
-proc cmarknodesetlisttight*(node: ptr structcmarknode; tight: cint): cint {.
+proc cmarkNodeSetListTight*(node: ptr structcmarknode; tight: cint): cint {.
     cdecl, importc: "cmark_node_set_list_tight".}
 
-proc cmarknodegetitemindex*(node: ptr structcmarknode): cint {.cdecl,
+proc cmarkNodeGetItemIndex*(node: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_get_item_index".}
 
-proc cmarknodesetitemindex*(node: ptr structcmarknode; idx: cint): cint {.cdecl,
+proc cmarkNodeSetItemIndex*(node: ptr structcmarknode; idx: cint): cint {.cdecl,
     importc: "cmark_node_set_item_index".}
 
-proc cmarknodegetfenceinfo*(node: ptr structcmarknode): cstring {.cdecl,
+proc cmarkNodeGetFenceInfo*(node: ptr structcmarknode): cstring {.cdecl,
     importc: "cmark_node_get_fence_info".}
 
-proc cmarknodesetfenceinfo*(node: ptr structcmarknode; info: cstring): cint {.
+proc cmarkNodeSetFenceInfo*(node: ptr structcmarknode; info: cstring): cint {.
     cdecl, importc: "cmark_node_set_fence_info".}
 
-proc cmarknodesetfenced*(node: ptr structcmarknode; fenced: cint; length: cint;
+proc cmarkNodeSetFenced*(node: ptr structcmarknode; fenced: cint; length: cint;
                          offset: cint; character: cschar): cint {.cdecl,
     importc: "cmark_node_set_fenced".}
 
-proc cmarknodegetfenced*(node: ptr structcmarknode; length: ptr cint;
+proc cmarkNodeGetFenced*(node: ptr structcmarknode; length: ptr cint;
                          offset: ptr cint; character: cstring): cint {.cdecl,
     importc: "cmark_node_get_fenced".}
 
-proc cmarknodegeturl*(node: ptr structcmarknode): cstring {.cdecl,
+proc cmarkNodeGetUrl*(node: ptr structcmarknode): cstring {.cdecl,
     importc: "cmark_node_get_url".}
 
-proc cmarknodeseturl*(node: ptr structcmarknode; url: cstring): cint {.cdecl,
+proc cmarkNodeSetUrl*(node: ptr structcmarknode; url: cstring): cint {.cdecl,
     importc: "cmark_node_set_url".}
 
-proc cmarknodegettitle*(node: ptr structcmarknode): cstring {.cdecl,
+proc cmarkNodeGetTitle*(node: ptr structcmarknode): cstring {.cdecl,
     importc: "cmark_node_get_title".}
 
-proc cmarknodesettitle*(node: ptr structcmarknode; title: cstring): cint {.
+proc cmarkNodeSetTitle*(node: ptr structcmarknode; title: cstring): cint {.
     cdecl, importc: "cmark_node_set_title".}
 
-proc cmarknodegetonenter*(node: ptr structcmarknode): cstring {.cdecl,
+proc cmarkNodeGetOnEnter*(node: ptr structcmarknode): cstring {.cdecl,
     importc: "cmark_node_get_on_enter".}
 
-proc cmarknodesetonenter*(node: ptr structcmarknode; onenter: cstring): cint {.
+proc cmarkNodeSetOnEnter*(node: ptr structcmarknode; onenter: cstring): cint {.
     cdecl, importc: "cmark_node_set_on_enter".}
 
-proc cmarknodegetonexit*(node: ptr structcmarknode): cstring {.cdecl,
+proc cmarkNodeGetOnExit*(node: ptr structcmarknode): cstring {.cdecl,
     importc: "cmark_node_get_on_exit".}
 
-proc cmarknodesetonexit*(node: ptr structcmarknode; onexit: cstring): cint {.
+proc cmarkNodeSetOnExit*(node: ptr structcmarknode; onexit: cstring): cint {.
     cdecl, importc: "cmark_node_set_on_exit".}
 
-proc cmarknodegetstartline*(node: ptr structcmarknode): cint {.cdecl,
+proc cmarkNodeGetStartLine*(node: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_get_start_line".}
 
-proc cmarknodegetstartcolumn*(node: ptr structcmarknode): cint {.cdecl,
+proc cmarkNodeGetStartColumn*(node: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_get_start_column".}
 
-proc cmarknodegetendline*(node: ptr structcmarknode): cint {.cdecl,
+proc cmarkNodeGetEndLine*(node: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_get_end_line".}
 
-proc cmarknodegetendcolumn*(node: ptr structcmarknode): cint {.cdecl,
+proc cmarkNodeGetEndColumn*(node: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_get_end_column".}
 
-proc cmarknodeunlink*(node: ptr structcmarknode): void {.cdecl,
+proc cmarkNodeUnlink*(node: ptr structcmarknode): void {.cdecl,
     importc: "cmark_node_unlink".}
 
-proc cmarknodeinsertbefore*(node: ptr structcmarknode;
+proc cmarkNodeInsertBefore*(node: ptr structcmarknode;
                             sibling: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_insert_before".}
 
-proc cmarknodeinsertafter*(node: ptr structcmarknode;
+proc cmarkNodeInsertAfter*(node: ptr structcmarknode;
                            sibling: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_insert_after".}
 
-proc cmarknodereplace*(oldnode: ptr structcmarknode;
+proc cmarkNodeReplace*(oldnode: ptr structcmarknode;
                        newnode: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_replace".}
 
-proc cmarknodeprependchild*(node: ptr structcmarknode;
+proc cmarkNodePrependChild*(node: ptr structcmarknode;
                             child: ptr structcmarknode): cint {.cdecl,
     importc: "cmark_node_prepend_child".}
 
-proc cmarknodeappendchild*(node: ptr structcmarknode; child: ptr structcmarknode): cint {.
+proc cmarkNodeAppendChild*(node: ptr structcmarknode; child: ptr structcmarknode): cint {.
     cdecl, importc: "cmark_node_append_child".}
 
-proc cmarkconsolidatetextnodes*(root: ptr structcmarknode): void {.cdecl,
+proc cmarkConsolidateTextNodes*(root: ptr structcmarknode): void {.cdecl,
     importc: "cmark_consolidate_text_nodes".}
 
-proc cmarknodeown*(root: ptr structcmarknode): void {.cdecl,
+proc cmarkNodeOwn*(root: ptr structcmarknode): void {.cdecl,
     importc: "cmark_node_own".}
 
-proc cmarkparsernew*(options: cint): ptr structcmarkparser {.cdecl,
+proc cmarkParserNew*(options: cint): ptr structcmarkparser {.cdecl,
     importc: "cmark_parser_new".}
 
-proc cmarkparsernewwithmem*(options: cint; mem: ptr structcmarkmem): ptr structcmarkparser {.
+proc cmarkParserNewWithMem*(options: cint; mem: ptr structcmarkmem): ptr structcmarkparser {.
     cdecl, importc: "cmark_parser_new_with_mem".}
 
-proc cmarkparserfree*(parser: ptr structcmarkparser): void {.cdecl,
+proc cmarkParserFree*(parser: ptr structcmarkparser): void {.cdecl,
     importc: "cmark_parser_free".}
 
-proc cmarkparserfeed*(parser: ptr structcmarkparser; buffer: cstring;
+proc cmarkParserFeed*(parser: ptr structcmarkparser; buffer: cstring;
                       len: culong): void {.cdecl, importc: "cmark_parser_feed".}
 
-proc cmarkparserfinish*(parser: ptr structcmarkparser): ptr structcmarknode {.
+proc cmarkParserFinish*(parser: ptr structcmarkparser): ptr structcmarknode {.
     cdecl, importc: "cmark_parser_finish".}
 
-proc cmarkparsedocument*(buffer: cstring; len: culong; options: cint): ptr structcmarknode {.
+proc cmarkParseDocument*(buffer: cstring; len: culong; options: cint): ptr structcmarknode {.
     cdecl, importc: "cmark_parse_document".}
 
-proc cmarkparsefile*(f: ptr structiofile; options: cint): ptr structcmarknode {.
+proc cmarkParseFile*(f: ptr structiofile; options: cint): ptr structcmarknode {.
     cdecl, importc: "cmark_parse_file".}
 
-proc cmarkrenderxml*(root: ptr structcmarknode; options: cint): cstring {.cdecl,
+proc cmarkRenderXml*(root: ptr structcmarknode; options: cint): cstring {.cdecl,
     importc: "cmark_render_xml".}
 
-proc cmarkrenderxmlwithmem*(root: ptr structcmarknode; options: cint;
+proc cmarkRenderXmlWithMem*(root: ptr structcmarknode; options: cint;
                             mem: ptr structcmarkmem): cstring {.cdecl,
     importc: "cmark_render_xml_with_mem".}
 
-proc cmarkrenderhtml*(root: ptr structcmarknode; options: cint;
+proc cmarkRenderHtml*(root: ptr structcmarknode; options: cint;
                       extensions: ptr structcmarkllist): cstring {.cdecl,
     importc: "cmark_render_html".}
 
-proc cmarkrenderhtmlwithmem*(root: ptr structcmarknode; options: cint;
+proc cmarkRenderHtmlWithMem*(root: ptr structcmarknode; options: cint;
                              extensions: ptr structcmarkllist;
                              mem: ptr structcmarkmem): cstring {.cdecl,
     importc: "cmark_render_html_with_mem".}
 
-proc cmarkrenderman*(root: ptr structcmarknode; options: cint; width: cint): cstring {.
+proc cmarkRenderMan*(root: ptr structcmarknode; options: cint; width: cint): cstring {.
     cdecl, importc: "cmark_render_man".}
 
-proc cmarkrendermanwithmem*(root: ptr structcmarknode; options: cint;
+proc cmarkRenderManWithMem*(root: ptr structcmarknode; options: cint;
                             width: cint; mem: ptr structcmarkmem): cstring {.
     cdecl, importc: "cmark_render_man_with_mem".}
 
-proc cmarkrendercommonmark*(root: ptr structcmarknode; options: cint;
+proc cmarkRenderCommonmark*(root: ptr structcmarknode; options: cint;
                             width: cint): cstring {.cdecl,
     importc: "cmark_render_commonmark".}
 
-proc cmarkrendercommonmarkwithmem*(root: ptr structcmarknode; options: cint;
+proc cmarkRenderCommonmarkWithMem*(root: ptr structcmarknode; options: cint;
                                    width: cint; mem: ptr structcmarkmem): cstring {.
     cdecl, importc: "cmark_render_commonmark_with_mem".}
 
-proc cmarkrenderplaintext*(root: ptr structcmarknode; options: cint; width: cint): cstring {.
+proc cmarkRenderPlaintext*(root: ptr structcmarknode; options: cint; width: cint): cstring {.
     cdecl, importc: "cmark_render_plaintext".}
 
-proc cmarkrenderplaintextwithmem*(root: ptr structcmarknode; options: cint;
+proc cmarkRenderPlaintextWithMem*(root: ptr structcmarknode; options: cint;
                                   width: cint; mem: ptr structcmarkmem): cstring {.
     cdecl, importc: "cmark_render_plaintext_with_mem".}
 
-proc cmarkrenderlatex*(root: ptr structcmarknode; options: cint; width: cint): cstring {.
+proc cmarkRenderLatex*(root: ptr structcmarknode; options: cint; width: cint): cstring {.
     cdecl, importc: "cmark_render_latex".}
 
-proc cmarkrenderlatexwithmem*(root: ptr structcmarknode; options: cint;
+proc cmarkRenderLatexWithMem*(root: ptr structcmarknode; options: cint;
                               width: cint; mem: ptr structcmarkmem): cstring {.
     cdecl, importc: "cmark_render_latex_with_mem".}
 
-proc cmarkversion*(): cint {.cdecl, importc: "cmark_version".}
+proc cmarkVersion*(): cint {.cdecl, importc: "cmark_version".}
 
-proc cmarkversionstring*(): cstring {.cdecl, importc: "cmark_version_string".}
+proc cmarkVersionString*(): cstring {.cdecl, importc: "cmark_version_string".}
