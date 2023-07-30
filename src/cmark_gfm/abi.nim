@@ -47,10 +47,7 @@ type
   Parser* = distinct object ## `struct cmark_parser`
   ParserPtr* = ptr Parser ## `cmark_parser*`
 
-  structiowidedata* = distinct object
   structcmarksyntaxextension* = distinct object
-  structiocodecvt* = distinct object
-  structiomarker* = distinct object
 
   structcmarkmem* {.pure, inheritable, bycopy.} = object
     calloc*: proc (a0: culong, a1: culong): pointer {.cdecl.}
@@ -60,37 +57,6 @@ type
   structcmarkllist* {.pure, inheritable, bycopy.} = object
     next*: ptr structcmarkllist
     data*: pointer
-
-  structiofile* {.pure, inheritable, bycopy.} = object
-    internalflags*: cint
-    internalioreadptr*: cstring
-    internalioreadend*: cstring
-    internalioreadbase*: cstring
-    internaliowritebase*: cstring
-    internaliowriteptr*: cstring
-    internaliowriteend*: cstring
-    internaliobufbase*: cstring
-    internaliobufend*: cstring
-    internaliosavebase*: cstring
-    internaliobackupbase*: cstring
-    internaliosaveend*: cstring
-    internalmarkers*: ptr structiomarker
-    internalchain*: ptr structiofile
-    internalfileno*: cint
-    internalflags2*: cint
-    internaloldoffset*: clong
-    internalcurcolumn*: cushort
-    internalvtableoffset*: cschar
-    internalshortbuf*: array[1'i64, cschar]
-    internallock*: pointer
-    internaloffset*: clong
-    internalcodecvt*: ptr structiocodecvt
-    internalwidedata*: ptr structiowidedata
-    internalfreereslist*: ptr structiofile
-    internalfreeresbuf*: pointer
-    compilerpad5*: culong
-    internalmode*: cint
-    internalunused2*: array[20'i64, cschar]
 
 const
   CmarkNodeTypePresent* = 32768
@@ -370,10 +336,6 @@ func cmarkParseDocument*(buffer: cstring,
                          len: culong,
                          options: cint): NodePtr {.
     importc: "cmark_parse_document".}
-
-func cmarkParseFile*(f: ptr structiofile,
-                     options: cint): NodePtr {.
-    importc: "cmark_parse_file".}
 
 func cmarkRenderXml*(root: NodePtr,
                      options: cint): cstring {.
