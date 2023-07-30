@@ -15,39 +15,35 @@ static:
 
 {.passL: libPath.}
 
-const
-  cmarkNodeTypeBlock = 0x8000
-  cmarkNodeTypeInline = 0xc000
-
 type
   NodeType* {.size: sizeof(cuint).} = enum
     ntNone = 0 ## Error status.
 
     # Block nodes.
-    ntDocument =           cmarkNodeTypeBlock or 0x0001
-    ntBlockQuote =         cmarkNodeTypeBlock or 0x0002
-    ntList =               cmarkNodeTypeBlock or 0x0003
-    ntItem =               cmarkNodeTypeBlock or 0x0004
-    ntCodeBlock =          cmarkNodeTypeBlock or 0x0005
-    ntHtmlBlock =          cmarkNodeTypeBlock or 0x0006
-    ntCustomBlock =        cmarkNodeTypeBlock or 0x0007
-    ntParagraph =          cmarkNodeTypeBlock or 0x0008
-    ntHeading =            cmarkNodeTypeBlock or 0x0009
-    ntThematicBreak =      cmarkNodeTypeBlock or 0x000a
-    ntFootnoteDefinition = cmarkNodeTypeBlock or 0x000b
+    ntDocument = 0x8001
+    ntBlockQuote
+    ntList
+    ntItem
+    ntCodeBlock
+    ntHtmlBlock
+    ntCustomBlock
+    ntParagraph
+    ntHeading
+    ntThematicBreak
+    ntFootnoteDefinition
 
     # Inline nodes.
-    ntText =              cmarkNodeTypeInline or 0x0001
-    ntSoftBreak =         cmarkNodeTypeInline or 0x0002
-    ntLineBreak =         cmarkNodeTypeInline or 0x0003
-    ntCode =              cmarkNodeTypeInline or 0x0004
-    ntHtmlInline =        cmarkNodeTypeInline or 0x0005
-    ntCustomInline =      cmarkNodeTypeInline or 0x0006
-    ntEmph =              cmarkNodeTypeInline or 0x0007
-    ntStrong =            cmarkNodeTypeInline or 0x0008
-    ntLink =              cmarkNodeTypeInline or 0x0009
-    ntImage =             cmarkNodeTypeInline or 0x000a
-    ntFootnoteReference = cmarkNodeTypeInline or 0x000b
+    ntText = 0xc001
+    ntSoftBreak
+    ntLineBreak
+    ntCode
+    ntHtmlInline
+    ntCustomInline
+    ntEmph
+    ntStrong
+    ntLink
+    ntImage
+    ntFootnoteReference
 
   ListType* {.size: sizeof(cuint).} = enum
     ltNoList
