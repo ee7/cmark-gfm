@@ -190,23 +190,23 @@ func cmarkLlistFree*(mem: MemPtr,
 
 # Creating and destroying nodes
 
-func cmarkNodeNew*(typearg: NodeType): NodePtr {.
+func cmarkNodeNew*(nodeType: NodeType): NodePtr {.
     importc: "cmark_node_new".}
-  ## Creates a new node of type `typearg`. Note that the node may have other
+  ## Creates a new node of type `nodeType`. Note that the node may have other
   ## required properties, which it is the caller's responsibility to assign.
 
-func cmarkNodeNewWithMem*(typearg: NodeType,
+func cmarkNodeNewWithMem*(nodeType: NodeType,
                           mem: MemPtr): NodePtr {.
     importc: "cmark_node_new_with_mem".}
   ## Same as `cmarkNodeNew`, but explicitly listing the memory allocator used
   ## to allocate the node. Note: be sure to use the same allocator for every
   ## node in a tree, or bad things can happen.
 
-func cmarkNodeNewWithExt*(typearg: NodeType,
+func cmarkNodeNewWithExt*(nodeType: NodeType,
                           extension: SyntaxExtensionPtr): NodePtr {.
     importc: "cmark_node_new_with_ext".}
 
-func cmarkNodeNewWithMemAndExt*(typearg: NodeType,
+func cmarkNodeNewWithMemAndExt*(nodeType: NodeType,
                                 mem: MemPtr,
                                 extension: SyntaxExtensionPtr): NodePtr {.
     importc: "cmark_node_new_with_mem_and_ext".}
@@ -334,7 +334,7 @@ func cmarkNodeGetListType*(node: NodePtr): ListType {.
   ## Returns the list type of `node`, or `ltNoList` if `node` is not a list.
 
 func cmarkNodeSetListType*(node: NodePtr,
-                           typearg: ListType): cint {.
+                           listType: ListType): cint {.
     importc: "cmark_node_set_list_type".}
   ## Sets the list type of `node`, returning 1 on success and 0 on error.
 
