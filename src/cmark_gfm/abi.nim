@@ -34,9 +34,11 @@ type
   enumcmarkdelimtype* {.size: sizeof(cuint).} = enum
     Cmarknodelim = 0, Cmarkperioddelim = 1, Cmarkparendelim = 2
 
-  enumcmarkeventtype* {.size: sizeof(cuint).} = enum
-    Cmarkeventnone = 0, Cmarkeventdone = 1, Cmarkevententer = 2,
-    Cmarkeventexit = 3
+  EventType* {.size: sizeof(cuint).} = enum
+    etNone
+    etDone
+    etEnter
+    etExit
 
   Node* = distinct object ## `struct cmark_node`
   NodePtr* = ptr Node ## `cmark_node*`
@@ -148,13 +150,13 @@ func cmarkIterNew*(root: NodePtr): IterPtr {.
 func cmarkIterFree*(iter: IterPtr): void {.
     importc: "cmark_iter_free".}
 
-func cmarkIterNext*(iter: IterPtr): enumcmarkeventtype {.
+func cmarkIterNext*(iter: IterPtr): EventType {.
     importc: "cmark_iter_next".}
 
 func cmarkIterGetNode*(iter: IterPtr): NodePtr {.
     importc: "cmark_iter_get_node".}
 
-func cmarkIterGetEventType*(iter: IterPtr): enumcmarkeventtype {.
+func cmarkIterGetEventType*(iter: IterPtr): EventType {.
     importc: "cmark_iter_get_event_type".}
 
 func cmarkIterGetRoot*(iter: IterPtr): NodePtr {.
@@ -162,7 +164,7 @@ func cmarkIterGetRoot*(iter: IterPtr): NodePtr {.
 
 func cmarkIterReset*(iter: IterPtr,
                      current: NodePtr,
-                     eventtype: enumcmarkeventtype): void {.
+                     eventtype: EventType): void {.
     importc: "cmark_iter_reset".}
 
 func cmarkNodeGetUserData*(node: NodePtr): pointer {.
