@@ -44,8 +44,10 @@ type
   Iter* = distinct object ## `struct cmark_iter`
   IterPtr* = ptr Iter ## `cmark_iter*`
 
+  Parser* = distinct object ## `struct cmark_parser`
+  ParserPtr* = ptr Parser ## `cmark_parser*`
+
   structiowidedata* = distinct object
-  structcmarkparser* = distinct object
   structcmarksyntaxextension* = distinct object
   structiocodecvt* = distinct object
   structiomarker* = distinct object
@@ -346,22 +348,22 @@ func cmarkConsolidateTextNodes*(root: NodePtr): void {.
 func cmarkNodeOwn*(root: NodePtr): void {.
     importc: "cmark_node_own".}
 
-func cmarkParserNew*(options: cint): ptr structcmarkparser {.
+func cmarkParserNew*(options: cint): ParserPtr {.
     importc: "cmark_parser_new".}
 
 func cmarkParserNewWithMem*(options: cint,
-                            mem: ptr structcmarkmem): ptr structcmarkparser {.
+                            mem: ptr structcmarkmem): ParserPtr {.
     importc: "cmark_parser_new_with_mem".}
 
-func cmarkParserFree*(parser: ptr structcmarkparser): void {.
+func cmarkParserFree*(parser: ParserPtr): void {.
     importc: "cmark_parser_free".}
 
-func cmarkParserFeed*(parser: ptr structcmarkparser,
+func cmarkParserFeed*(parser: ParserPtr,
                       buffer: cstring,
                       len: culong): void {.
     importc: "cmark_parser_feed".}
 
-func cmarkParserFinish*(parser: ptr structcmarkparser): NodePtr {.
+func cmarkParserFinish*(parser: ParserPtr): NodePtr {.
     importc: "cmark_parser_finish".}
 
 func cmarkParseDocument*(buffer: cstring,
