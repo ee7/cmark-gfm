@@ -38,12 +38,14 @@ type
     Cmarkeventnone = 0, Cmarkeventdone = 1, Cmarkevententer = 2,
     Cmarkeventexit = 3
 
+  Node* = distinct object ## `struct cmark_node`
+  NodePtr* = ptr Node ## `cmark_node*`
+
   structiowidedata* = distinct object
   structcmarkparser* = distinct object
   structcmarksyntaxextension* = distinct object
   structcmarkiter* = distinct object
   structiocodecvt* = distinct object
-  structcmarknode* = distinct object
   structiomarker* = distinct object
 
   structcmarkmem* {.pure, inheritable, bycopy.} = object
@@ -98,10 +100,10 @@ var
 
 {.push cdecl, raises: [], gcsafe.}
 
-func cmarkNodeGetHeadingLevel*(node: ptr structcmarknode): cint {.
+func cmarkNodeGetHeadingLevel*(node: NodePtr): cint {.
     importc: "cmark_node_get_heading_level".}
 
-func cmarkNodeSetHeadingLevel*(node: ptr structcmarknode,
+func cmarkNodeSetHeadingLevel*(node: NodePtr,
                                level: cint): cint {.
     importc: "cmark_node_set_heading_level".}
 
@@ -133,44 +135,44 @@ func cmarkLlistFree*(mem: ptr structcmarkmem,
                      head: ptr structcmarkllist): void {.
     importc: "cmark_llist_free".}
 
-func cmarkNodeNew*(typearg: enumcmarknodetype): ptr structcmarknode {.
+func cmarkNodeNew*(typearg: enumcmarknodetype): NodePtr {.
     importc: "cmark_node_new".}
 
 func cmarkNodeNewWithMem*(typearg: enumcmarknodetype,
-                          mem: ptr structcmarkmem): ptr structcmarknode {.
+                          mem: ptr structcmarkmem): NodePtr {.
     importc: "cmark_node_new_with_mem".}
 
 func cmarkNodeNewWithExt*(typearg: enumcmarknodetype,
-                          extension: ptr structcmarksyntaxextension): ptr structcmarknode {.
+                          extension: ptr structcmarksyntaxextension): NodePtr {.
     importc: "cmark_node_new_with_ext".}
 
 func cmarkNodeNewWithMemAndExt*(typearg: enumcmarknodetype,
                                 mem: ptr structcmarkmem,
-                                extension: ptr structcmarksyntaxextension): ptr structcmarknode {.
+                                extension: ptr structcmarksyntaxextension): NodePtr {.
     importc: "cmark_node_new_with_mem_and_ext".}
 
-func cmarkNodeFree*(node: ptr structcmarknode): void {.
+func cmarkNodeFree*(node: NodePtr): void {.
     importc: "cmark_node_free".}
 
-func cmarkNodeNext*(node: ptr structcmarknode): ptr structcmarknode {.
+func cmarkNodeNext*(node: NodePtr): NodePtr {.
     importc: "cmark_node_next".}
 
-func cmarkNodePrevious*(node: ptr structcmarknode): ptr structcmarknode {.
+func cmarkNodePrevious*(node: NodePtr): NodePtr {.
     importc: "cmark_node_previous".}
 
-func cmarkNodeParent*(node: ptr structcmarknode): ptr structcmarknode {.
+func cmarkNodeParent*(node: NodePtr): NodePtr {.
     importc: "cmark_node_parent".}
 
-func cmarkNodeFirstChild*(node: ptr structcmarknode): ptr structcmarknode {.
+func cmarkNodeFirstChild*(node: NodePtr): NodePtr {.
     importc: "cmark_node_first_child".}
 
-func cmarkNodeLastChild*(node: ptr structcmarknode): ptr structcmarknode {.
+func cmarkNodeLastChild*(node: NodePtr): NodePtr {.
     importc: "cmark_node_last_child".}
 
-func cmarkNodeParentFootnoteDef*(node: ptr structcmarknode): ptr structcmarknode {.
+func cmarkNodeParentFootnoteDef*(node: NodePtr): NodePtr {.
     importc: "cmark_node_parent_footnote_def".}
 
-func cmarkIterNew*(root: ptr structcmarknode): ptr structcmarkiter {.
+func cmarkIterNew*(root: NodePtr): ptr structcmarkiter {.
     importc: "cmark_iter_new".}
 
 func cmarkIterFree*(iter: ptr structcmarkiter): void {.
@@ -179,167 +181,167 @@ func cmarkIterFree*(iter: ptr structcmarkiter): void {.
 func cmarkIterNext*(iter: ptr structcmarkiter): enumcmarkeventtype {.
     importc: "cmark_iter_next".}
 
-func cmarkIterGetNode*(iter: ptr structcmarkiter): ptr structcmarknode {.
+func cmarkIterGetNode*(iter: ptr structcmarkiter): NodePtr {.
     importc: "cmark_iter_get_node".}
 
 func cmarkIterGetEventType*(iter: ptr structcmarkiter): enumcmarkeventtype {.
     importc: "cmark_iter_get_event_type".}
 
-func cmarkIterGetRoot*(iter: ptr structcmarkiter): ptr structcmarknode {.
+func cmarkIterGetRoot*(iter: ptr structcmarkiter): NodePtr {.
     importc: "cmark_iter_get_root".}
 
 func cmarkIterReset*(iter: ptr structcmarkiter,
-                     current: ptr structcmarknode,
+                     current: NodePtr,
                      eventtype: enumcmarkeventtype): void {.
     importc: "cmark_iter_reset".}
 
-func cmarkNodeGetUserData*(node: ptr structcmarknode): pointer {.
+func cmarkNodeGetUserData*(node: NodePtr): pointer {.
     importc: "cmark_node_get_user_data".}
 
-func cmarkNodeSetUserData*(node: ptr structcmarknode,
+func cmarkNodeSetUserData*(node: NodePtr,
                            userdata: pointer): cint {.
     importc: "cmark_node_set_user_data".}
 
-func cmarkNodeSetUserDataFreeFunc*(node: ptr structcmarknode,
+func cmarkNodeSetUserDataFreeFunc*(node: NodePtr,
                                    freefunc: proc (a0: ptr structcmarkmem,
                                                    a1: pointer): void {.cdecl.}): cint {.
     importc: "cmark_node_set_user_data_free_func".}
 
-func cmarkNodeGetType*(node: ptr structcmarknode): enumcmarknodetype {.
+func cmarkNodeGetType*(node: NodePtr): enumcmarknodetype {.
     importc: "cmark_node_get_type".}
 
-func cmarkNodeGetTypeString*(node: ptr structcmarknode): cstring {.
+func cmarkNodeGetTypeString*(node: NodePtr): cstring {.
     importc: "cmark_node_get_type_string".}
 
-func cmarkNodeGetLiteral*(node: ptr structcmarknode): cstring {.
+func cmarkNodeGetLiteral*(node: NodePtr): cstring {.
     importc: "cmark_node_get_literal".}
 
-func cmarkNodeSetLiteral*(node: ptr structcmarknode,
+func cmarkNodeSetLiteral*(node: NodePtr,
                           content: cstring): cint {.
     importc: "cmark_node_set_literal".}
 
-func cmarkNodeGetListType*(node: ptr structcmarknode): enumcmarklisttype {.
+func cmarkNodeGetListType*(node: NodePtr): enumcmarklisttype {.
     importc: "cmark_node_get_list_type".}
 
-func cmarkNodeSetListType*(node: ptr structcmarknode,
+func cmarkNodeSetListType*(node: NodePtr,
                            typearg: enumcmarklisttype): cint {.
     importc: "cmark_node_set_list_type".}
 
-func cmarkNodeGetListDelim*(node: ptr structcmarknode): enumcmarkdelimtype {.
+func cmarkNodeGetListDelim*(node: NodePtr): enumcmarkdelimtype {.
     importc: "cmark_node_get_list_delim".}
 
-func cmarkNodeSetListDelim*(node: ptr structcmarknode,
+func cmarkNodeSetListDelim*(node: NodePtr,
                             delim: enumcmarkdelimtype): cint {.
     importc: "cmark_node_set_list_delim".}
 
-func cmarkNodeGetListStart*(node: ptr structcmarknode): cint {.
+func cmarkNodeGetListStart*(node: NodePtr): cint {.
     importc: "cmark_node_get_list_start".}
 
-func cmarkNodeSetListStart*(node: ptr structcmarknode,
+func cmarkNodeSetListStart*(node: NodePtr,
                             start: cint): cint {.
     importc: "cmark_node_set_list_start".}
 
-func cmarkNodeGetListTight*(node: ptr structcmarknode): cint {.
+func cmarkNodeGetListTight*(node: NodePtr): cint {.
     importc: "cmark_node_get_list_tight".}
 
-func cmarkNodeSetListTight*(node: ptr structcmarknode,
+func cmarkNodeSetListTight*(node: NodePtr,
                             tight: cint): cint {.
     importc: "cmark_node_set_list_tight".}
 
-func cmarkNodeGetItemIndex*(node: ptr structcmarknode): cint {.
+func cmarkNodeGetItemIndex*(node: NodePtr): cint {.
     importc: "cmark_node_get_item_index".}
 
-func cmarkNodeSetItemIndex*(node: ptr structcmarknode,
+func cmarkNodeSetItemIndex*(node: NodePtr,
                             idx: cint): cint {.
     importc: "cmark_node_set_item_index".}
 
-func cmarkNodeGetFenceInfo*(node: ptr structcmarknode): cstring {.
+func cmarkNodeGetFenceInfo*(node: NodePtr): cstring {.
     importc: "cmark_node_get_fence_info".}
 
-func cmarkNodeSetFenceInfo*(node: ptr structcmarknode,
+func cmarkNodeSetFenceInfo*(node: NodePtr,
                             info: cstring): cint {.
     importc: "cmark_node_set_fence_info".}
 
-func cmarkNodeSetFenced*(node: ptr structcmarknode,
+func cmarkNodeSetFenced*(node: NodePtr,
                          fenced: cint,
                          length: cint,
                          offset: cint,
                          character: cschar): cint {.
     importc: "cmark_node_set_fenced".}
 
-func cmarkNodeGetFenced*(node: ptr structcmarknode,
+func cmarkNodeGetFenced*(node: NodePtr,
                          length: ptr cint,
                          offset: ptr cint,
                          character: cstring): cint {.
     importc: "cmark_node_get_fenced".}
 
-func cmarkNodeGetUrl*(node: ptr structcmarknode): cstring {.
+func cmarkNodeGetUrl*(node: NodePtr): cstring {.
     importc: "cmark_node_get_url".}
 
-func cmarkNodeSetUrl*(node: ptr structcmarknode,
+func cmarkNodeSetUrl*(node: NodePtr,
                       url: cstring): cint {.
     importc: "cmark_node_set_url".}
 
-func cmarkNodeGetTitle*(node: ptr structcmarknode): cstring {.
+func cmarkNodeGetTitle*(node: NodePtr): cstring {.
     importc: "cmark_node_get_title".}
 
-func cmarkNodeSetTitle*(node: ptr structcmarknode,
+func cmarkNodeSetTitle*(node: NodePtr,
                         title: cstring): cint {.
     importc: "cmark_node_set_title".}
 
-func cmarkNodeGetOnEnter*(node: ptr structcmarknode): cstring {.
+func cmarkNodeGetOnEnter*(node: NodePtr): cstring {.
     importc: "cmark_node_get_on_enter".}
 
-func cmarkNodeSetOnEnter*(node: ptr structcmarknode,
+func cmarkNodeSetOnEnter*(node: NodePtr,
                           onenter: cstring): cint {.
     importc: "cmark_node_set_on_enter".}
 
-func cmarkNodeGetOnExit*(node: ptr structcmarknode): cstring {.
+func cmarkNodeGetOnExit*(node: NodePtr): cstring {.
     importc: "cmark_node_get_on_exit".}
 
-func cmarkNodeSetOnExit*(node: ptr structcmarknode,
+func cmarkNodeSetOnExit*(node: NodePtr,
                          onexit: cstring): cint {.
     importc: "cmark_node_set_on_exit".}
 
-func cmarkNodeGetStartLine*(node: ptr structcmarknode): cint {.
+func cmarkNodeGetStartLine*(node: NodePtr): cint {.
     importc: "cmark_node_get_start_line".}
 
-func cmarkNodeGetStartColumn*(node: ptr structcmarknode): cint {.
+func cmarkNodeGetStartColumn*(node: NodePtr): cint {.
     importc: "cmark_node_get_start_column".}
 
-func cmarkNodeGetEndLine*(node: ptr structcmarknode): cint {.
+func cmarkNodeGetEndLine*(node: NodePtr): cint {.
     importc: "cmark_node_get_end_line".}
 
-func cmarkNodeGetEndColumn*(node: ptr structcmarknode): cint {.
+func cmarkNodeGetEndColumn*(node: NodePtr): cint {.
     importc: "cmark_node_get_end_column".}
 
-func cmarkNodeUnlink*(node: ptr structcmarknode): void {.
+func cmarkNodeUnlink*(node: NodePtr): void {.
     importc: "cmark_node_unlink".}
 
-func cmarkNodeInsertBefore*(node: ptr structcmarknode,
-                            sibling: ptr structcmarknode): cint {.
+func cmarkNodeInsertBefore*(node: NodePtr,
+                            sibling: NodePtr): cint {.
     importc: "cmark_node_insert_before".}
 
-func cmarkNodeInsertAfter*(node: ptr structcmarknode,
-                           sibling: ptr structcmarknode): cint {.
+func cmarkNodeInsertAfter*(node: NodePtr,
+                           sibling: NodePtr): cint {.
     importc: "cmark_node_insert_after".}
 
-func cmarkNodeReplace*(oldnode: ptr structcmarknode,
-                       newnode: ptr structcmarknode): cint {.
+func cmarkNodeReplace*(oldnode: NodePtr,
+                       newnode: NodePtr): cint {.
     importc: "cmark_node_replace".}
 
-func cmarkNodePrependChild*(node: ptr structcmarknode,
-                            child: ptr structcmarknode): cint {.
+func cmarkNodePrependChild*(node: NodePtr,
+                            child: NodePtr): cint {.
     importc: "cmark_node_prepend_child".}
 
-func cmarkNodeAppendChild*(node: ptr structcmarknode,
-                           child: ptr structcmarknode): cint {.
+func cmarkNodeAppendChild*(node: NodePtr,
+                           child: NodePtr): cint {.
     importc: "cmark_node_append_child".}
 
-func cmarkConsolidateTextNodes*(root: ptr structcmarknode): void {.
+func cmarkConsolidateTextNodes*(root: NodePtr): void {.
     importc: "cmark_consolidate_text_nodes".}
 
-func cmarkNodeOwn*(root: ptr structcmarknode): void {.
+func cmarkNodeOwn*(root: NodePtr): void {.
     importc: "cmark_node_own".}
 
 func cmarkParserNew*(options: cint): ptr structcmarkparser {.
@@ -357,77 +359,77 @@ func cmarkParserFeed*(parser: ptr structcmarkparser,
                       len: culong): void {.
     importc: "cmark_parser_feed".}
 
-func cmarkParserFinish*(parser: ptr structcmarkparser): ptr structcmarknode {.
+func cmarkParserFinish*(parser: ptr structcmarkparser): NodePtr {.
     importc: "cmark_parser_finish".}
 
 func cmarkParseDocument*(buffer: cstring,
                          len: culong,
-                         options: cint): ptr structcmarknode {.
+                         options: cint): NodePtr {.
     importc: "cmark_parse_document".}
 
 func cmarkParseFile*(f: ptr structiofile,
-                     options: cint): ptr structcmarknode {.
+                     options: cint): NodePtr {.
     importc: "cmark_parse_file".}
 
-func cmarkRenderXml*(root: ptr structcmarknode,
+func cmarkRenderXml*(root: NodePtr,
                      options: cint): cstring {.
     importc: "cmark_render_xml".}
 
-func cmarkRenderXmlWithMem*(root: ptr structcmarknode,
+func cmarkRenderXmlWithMem*(root: NodePtr,
                             options: cint,
                             mem: ptr structcmarkmem): cstring {.
     importc: "cmark_render_xml_with_mem".}
 
-func cmarkRenderHtml*(root: ptr structcmarknode,
+func cmarkRenderHtml*(root: NodePtr,
                       options: cint,
                       extensions: ptr structcmarkllist): cstring {.
     importc: "cmark_render_html".}
 
-func cmarkRenderHtmlWithMem*(root: ptr structcmarknode,
+func cmarkRenderHtmlWithMem*(root: NodePtr,
                              options: cint,
                              extensions: ptr structcmarkllist,
                              mem: ptr structcmarkmem): cstring {.
     importc: "cmark_render_html_with_mem".}
 
-func cmarkRenderMan*(root: ptr structcmarknode,
+func cmarkRenderMan*(root: NodePtr,
                      options: cint,
                      width: cint): cstring {.
     importc: "cmark_render_man".}
 
-func cmarkRenderManWithMem*(root: ptr structcmarknode,
+func cmarkRenderManWithMem*(root: NodePtr,
                             options: cint,
                             width: cint,
                             mem: ptr structcmarkmem): cstring {.
     importc: "cmark_render_man_with_mem".}
 
-func cmarkRenderCommonmark*(root: ptr structcmarknode,
+func cmarkRenderCommonmark*(root: NodePtr,
                             options: cint,
                             width: cint): cstring {.
     importc: "cmark_render_commonmark".}
 
-func cmarkRenderCommonmarkWithMem*(root: ptr structcmarknode,
+func cmarkRenderCommonmarkWithMem*(root: NodePtr,
                                    options: cint,
                                    width: cint,
                                    mem: ptr structcmarkmem): cstring {.
     importc: "cmark_render_commonmark_with_mem".}
 
-func cmarkRenderPlaintext*(root: ptr structcmarknode,
+func cmarkRenderPlaintext*(root: NodePtr,
                            options: cint,
                            width: cint): cstring {.
     importc: "cmark_render_plaintext".}
 
-func cmarkRenderPlaintextWithMem*(root: ptr structcmarknode,
+func cmarkRenderPlaintextWithMem*(root: NodePtr,
                                   options: cint,
                                   width: cint,
                                   mem: ptr structcmarkmem): cstring {.
     importc: "cmark_render_plaintext_with_mem".}
 
-func cmarkRenderLatex*(root: ptr structcmarknode,
+func cmarkRenderLatex*(root: NodePtr,
                        options: cint,
                        width: cint): cstring {.
     importc: "cmark_render_latex".}
 
-func cmarkRenderLatexWithMem*(root: ptr structcmarknode,
+func cmarkRenderLatexWithMem*(root: NodePtr,
                               options: cint,
                               width: cint,
                               mem: ptr structcmarkmem): cstring {.
