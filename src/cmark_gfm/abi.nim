@@ -1,3 +1,6 @@
+from system/ansi_c import c_free
+export c_free
+
 type
   enumcmarknodetype* {.size: sizeof(cuint).} = enum
     Cmarknodenone = 0, Cmarknodedocument = 32769, Cmarknodeblockquote = 32770,
