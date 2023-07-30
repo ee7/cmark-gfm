@@ -31,8 +31,10 @@ type
   enumcmarklisttype* {.size: sizeof(cuint).} = enum
     Cmarknolist = 0, Cmarkbulletlist = 1, Cmarkorderedlist = 2
 
-  enumcmarkdelimtype* {.size: sizeof(cuint).} = enum
-    Cmarknodelim = 0, Cmarkperioddelim = 1, Cmarkparendelim = 2
+  DelimType* {.size: sizeof(cuint).} = enum
+    dtNoDeLim
+    dtPeriodDelim
+    dtParenDelim
 
   EventType* {.size: sizeof(cuint).} = enum
     etNone
@@ -199,11 +201,11 @@ func cmarkNodeSetListType*(node: NodePtr,
                            typearg: enumcmarklisttype): cint {.
     importc: "cmark_node_set_list_type".}
 
-func cmarkNodeGetListDelim*(node: NodePtr): enumcmarkdelimtype {.
+func cmarkNodeGetListDelim*(node: NodePtr): DelimType {.
     importc: "cmark_node_get_list_delim".}
 
 func cmarkNodeSetListDelim*(node: NodePtr,
-                            delim: enumcmarkdelimtype): cint {.
+                            delim: DelimType): cint {.
     importc: "cmark_node_set_list_delim".}
 
 func cmarkNodeGetListStart*(node: NodePtr): cint {.
