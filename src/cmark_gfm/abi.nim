@@ -41,10 +41,12 @@ type
   Node* = distinct object ## `struct cmark_node`
   NodePtr* = ptr Node ## `cmark_node*`
 
+  Iter* = distinct object ## `struct cmark_iter`
+  IterPtr* = ptr Iter ## `cmark_iter*`
+
   structiowidedata* = distinct object
   structcmarkparser* = distinct object
   structcmarksyntaxextension* = distinct object
-  structcmarkiter* = distinct object
   structiocodecvt* = distinct object
   structiomarker* = distinct object
 
@@ -172,25 +174,25 @@ func cmarkNodeLastChild*(node: NodePtr): NodePtr {.
 func cmarkNodeParentFootnoteDef*(node: NodePtr): NodePtr {.
     importc: "cmark_node_parent_footnote_def".}
 
-func cmarkIterNew*(root: NodePtr): ptr structcmarkiter {.
+func cmarkIterNew*(root: NodePtr): IterPtr {.
     importc: "cmark_iter_new".}
 
-func cmarkIterFree*(iter: ptr structcmarkiter): void {.
+func cmarkIterFree*(iter: IterPtr): void {.
     importc: "cmark_iter_free".}
 
-func cmarkIterNext*(iter: ptr structcmarkiter): enumcmarkeventtype {.
+func cmarkIterNext*(iter: IterPtr): enumcmarkeventtype {.
     importc: "cmark_iter_next".}
 
-func cmarkIterGetNode*(iter: ptr structcmarkiter): NodePtr {.
+func cmarkIterGetNode*(iter: IterPtr): NodePtr {.
     importc: "cmark_iter_get_node".}
 
-func cmarkIterGetEventType*(iter: ptr structcmarkiter): enumcmarkeventtype {.
+func cmarkIterGetEventType*(iter: IterPtr): enumcmarkeventtype {.
     importc: "cmark_iter_get_event_type".}
 
-func cmarkIterGetRoot*(iter: ptr structcmarkiter): NodePtr {.
+func cmarkIterGetRoot*(iter: IterPtr): NodePtr {.
     importc: "cmark_iter_get_root".}
 
-func cmarkIterReset*(iter: ptr structcmarkiter,
+func cmarkIterReset*(iter: IterPtr,
                      current: NodePtr,
                      eventtype: enumcmarkeventtype): void {.
     importc: "cmark_iter_reset".}
