@@ -4,15 +4,17 @@ export c_free
 
 const cmarkDir = currentSourcePath().parentDir().parentDir().parentDir() / "cmark-gfm"
 const libPath = cmarkDir / "build" / "src" / "libcmark-gfm.a"
+const libPath2 = cmarkDir / "build" / "extensions" / "libcmark-gfm-extensions.a"
 
 static:
-  if not fileExists(libPath):
+  if not fileExists(libPath) or not fileExists(libPath2):
     echo "running make..."
     let (outp, errC) = gorgeEx("make --directory=" & cmarkDir)
     if errC != 0:
       echo outp
       quit 1
 
+{.passL: libPath2.}
 {.passL: libPath.}
 
 type
@@ -660,5 +662,30 @@ func cmarkVersion*: cint {.importc: "cmark_version".}
 
 func cmarkVersionString*: cstring {.importc: "cmark_version_string".}
   ## The library version string for runtime checks.
+
+
+# Extensions
+
+func cmarkGfmCoreExtensionsEnsureRegistered*: void {.
+    importc: "cmark_gfm_core_extensions_ensure_registered".}
+
+func cmarkFindSyntaxExtension*(name: cstring): SyntaxExtensionPtr {.
+    importc: "cmark_find_syntax_extension".}
+  ## Search for the syntax extension called `name` among the registered syntax
+  ## extensions.
+  ##
+  ## It can then be attached to a cmark_parser with
+  ## `cmarkParserAttachSyntaxExtension`.
+
+func cmarkParserAttachSyntaxExtension*(parser: ParserPtr,
+                                       extension: SyntaxExtensionPtr): cint {.
+    importc: "cmark_parser_attach_syntax_extension".}
+  ## Attaches the syntax `extension` to the `parser`, to provide extra syntax
+  ## rules. See the documentation for cmark_syntax_extension for more information.
+  ##
+  ## Returns 1 if the `extension` was successfully attached, and 0 otherwise.
+
+func cmarkParserGetSyntaxExtensions*(parser: ParserPtr): LlistPtr {.
+    importc: "cmark_parser_get_syntax_extensions".}
 
 {.pop.}
