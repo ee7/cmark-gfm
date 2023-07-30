@@ -89,10 +89,6 @@ type
 const
   CmarkOptDefault* = 0
 
-var
-  CmarkNodeLastBlock* {.importc: "CMARK_NODE_LAST_BLOCK".}: NodeType
-  CmarkNodeLastInline* {.importc: "CMARK_NODE_LAST_INLINE".}: NodeType
-
 {.push cdecl, raises: [], gcsafe.}
 
 func cmarkNodeGetHeadingLevel*(node: NodePtr): cint {.
