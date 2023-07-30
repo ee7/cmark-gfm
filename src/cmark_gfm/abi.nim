@@ -120,13 +120,13 @@ proc cmarkNodeSetHeadingLevel*(node: ptr structcmarknode, level: cint): cint {.
 proc cmarkMarkdownToHtml*(text: cstring, len: culong, options: cint): cstring {.
     importc: "cmark_markdown_to_html".}
 
-proc cmarkGetDefaultMemAllocator*(): ptr structcmarkmem {.
+proc cmarkGetDefaultMemAllocator*: ptr structcmarkmem {.
     importc: "cmark_get_default_mem_allocator".}
 
-proc cmarkGetArenaMemAllocator*(): ptr structcmarkmem {.
+proc cmarkGetArenaMemAllocator*: ptr structcmarkmem {.
     importc: "cmark_get_arena_mem_allocator".}
 
-proc cmarkArenaReset*(): void {.importc: "cmark_arena_reset".}
+proc cmarkArenaReset*: void {.importc: "cmark_arena_reset".}
 
 proc cmarkLlistAppend*(mem: ptr structcmarkmem, head: ptr structcmarkllist,
                        data: pointer): ptr structcmarkllist {.
@@ -393,8 +393,8 @@ proc cmarkRenderLatexWithMem*(root: ptr structcmarknode, options: cint,
                               width: cint, mem: ptr structcmarkmem): cstring {.
     importc: "cmark_render_latex_with_mem".}
 
-proc cmarkVersion*(): cint {.importc: "cmark_version".}
+proc cmarkVersion*: cint {.importc: "cmark_version".}
 
-proc cmarkVersionString*(): cstring {.importc: "cmark_version_string".}
+proc cmarkVersionString*: cstring {.importc: "cmark_version_string".}
 
 {.pop.}
