@@ -86,71 +86,54 @@ type
     data*: pointer
   LlistPtr* = ptr Llist
 
-# Options
+  CmarkOptions* {.size: sizeof(cuint).} = enum
+    coDefault = 0
+      ## Default options.
 
-const
-  CmarkOptDefault* = 0
-  ## Default options.
+    # Options affecting rendering (also `coUnsafe`, which must be at the end).
+    coSourcepos = 1 shl 1
+      ## Include a `data-sourcepos` attribute on all block elements.
+    coHardbreaks = 1 shl 2
+      ## Render `softbreak` elements as hard line breaks.
+    coSafe = 1 shl 3
+      ## Defined for API compatibility, but it no longer has any effect.
+      ## "Safe" mode is now the default: use `coUnsafe` to disable it.
+    coNoBreaks = 1 shl 4
+      ## Render `softbreak` elements as spaces.
 
+    # Options affecting parsing.
+    coNormalize = 1 shl 8
+      ## Legacy option (no effect).
+    coValidateUtf8 = 1 shl 9
+      ## Validate UTF-8 in the input before parsing, replacing illegal sequences
+      ## with the character U+FFFD.
+    coSmart = 1 shl 10
+      ## Convert straight quotes to curly, --- to em dashes, and -- to en dashes.
 
-  # Options affecting rendering
+    # Options affecting parsing (GFM-only).
+    coGitHubPreLang = 1 shl 11
+      ## Use GitHub-style <pre lang="x"> tags for code blocks instead of
+      ## <pre><code class="language-x">.
+    coLiberalHtmlTag = 1 shl 12
+      ## Be liberal in interpreting inline HTML tags.
+    coFootnotes = 1 shl 13
+      ## Parse footnotes.
+    coStrikethroughDoubleTilde = 1 shl 14
+      ## Only parse strikethroughs if surrounded by exactly 2 tildes.
+      ## Gives some compatibility with redcarpet.
+    coTablePreferStyleAttributes = 1 shl 15
+      ## Use style attributes to align table cells instead of align attributes.
+    coFullInfoString = 1 shl 16
+      ## Include the remainder of the info string in code blocks in a separate
+      ## attribute.
 
-  CmarkOptSourcepos = 1 shl 1
-  ## Include a `data-sourcepos` attribute on all block elements.
-
-  CmarkOptHardbreaks = 1 shl 2
-  ## Render `softbreak` elements as hard line breaks.
-
-  CmarkOptSafe = 1 shl 3
-  ## Defined here for API compatibility, but it no longer has any effect.
-  ## "Safe" mode is now the default: set `CmarkOptUnsafe` to disable it.
-
-  CmarkOptUnsafe = 1 shl 17
-  ## Render raw HTML and unsafe links (`javascript:`, `vbscript:`, `file:`,
-  ## and `data:`, except for `image/png`, `image/gif`, `image/jpeg`, or
-  ## `image/webp` mime types).
-  ## By default, raw HTML is replaced by a placeholder HTML comment.
-  ## Unsafe links are replaced by empty strings.
-
-  CmarkOptNoBreaks = 1 shl 4
-  ## Render `softbreak` elements as spaces.
-
-
-  # Options affecting parsing
-
-  CmarkOptNormalize = 1 shl 8
-  ## Legacy option (no effect).
-
-  CmarkOptValidateUtf8 = 1 shl 9
-  ## Validate UTF-8 in the input before parsing, replacing illegal sequences
-  ## with the replacement character U+FFFD.
-
-  CmarkOptSmart = 1 shl 10
-  ## Convert straight quotes to curly, --- to em dashes, -- to en dashes.
-
-
-  # Options affecting parsing (GFM-only)
-
-  CmarkOptGitHubPreLang = 1 shl 11
-  ## Use GitHub-style <pre lang="x"> tags for code blocks instead of <pre><code
-  ## class="language-x">.
-
-  CmarkOptLiberalHtmlTag = 1 shl 12
-  ## Be liberal in interpreting inline HTML tags.
-
-  CmarkOptFootnotes = 1 shl 13
-  ## Parse footnotes.
-
-  CmarkOptStrikethroughDoubleTilde = 1 shl 14
-  ## Only parse strikethroughs if surrounded by exactly 2 tildes.
-  ## Gives some compatibility with redcarpet.
-
-  CmarkOptTablePreferStyleAttributes = 1 shl 15
-  ## Use style attributes to align table cells instead of align attributes.
-
-  CmarkOptFullInfoString = 1 shl 16
-  ## Include the remainder of the info string in code blocks in a separate attribute.
-
+    # Option affecting rendering.
+    coUnsafe = 1 shl 17
+      ## Render raw HTML and unsafe links (`javascript:`, `vbscript:`, `file:`,
+      ## and `data:`, except for `image/png`, `image/gif`, `image/jpeg`, or
+      ## `image/webp` mime types).
+      ## By default, raw HTML is replaced by a placeholder HTML comment.
+      ## Unsafe links are replaced by empty strings.
 
 {.push cdecl, raises: [], gcsafe.}
 
