@@ -87,9 +87,6 @@ type
   LlistPtr* = ptr Llist
 
 const
-  CmarkNodeTypePresent* = 32768
-  CmarkNodeTypeMask* = 49152
-  CmarkNodeValueMask* = 16383
   CmarkOptDefault* = 0
 
 var
