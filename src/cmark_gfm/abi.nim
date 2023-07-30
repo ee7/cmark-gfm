@@ -15,35 +15,39 @@ static:
 
 {.passL: libPath.}
 
+const
+  cmarkNodeTypeBlock = 0x8000
+  cmarkNodeTypeInline = 0xc000
+
 type
   NodeType* {.size: sizeof(cuint).} = enum
     ntNone = 0 ## Error status.
 
     # Block nodes.
-    ntDocument = 32769
-    ntBlockQuote = 32770
-    ntList = 32771
-    ntItem = 32772
-    ntCodeBlock = 32773
-    ntHtmlBlock = 32774
-    ntCustomBlock = 32775
-    ntParagraph = 32776
-    ntHeading = 32777
-    ntThematicBreak = 32778
-    ntFootnoteDefinition = 32779
+    ntDocument =           cmarkNodeTypeBlock or 0x0001
+    ntBlockQuote =         cmarkNodeTypeBlock or 0x0002
+    ntList =               cmarkNodeTypeBlock or 0x0003
+    ntItem =               cmarkNodeTypeBlock or 0x0004
+    ntCodeBlock =          cmarkNodeTypeBlock or 0x0005
+    ntHtmlBlock =          cmarkNodeTypeBlock or 0x0006
+    ntCustomBlock =        cmarkNodeTypeBlock or 0x0007
+    ntParagraph =          cmarkNodeTypeBlock or 0x0008
+    ntHeading =            cmarkNodeTypeBlock or 0x0009
+    ntThematicBreak =      cmarkNodeTypeBlock or 0x000a
+    ntFootnoteDefinition = cmarkNodeTypeBlock or 0x000b
 
     # Inline nodes.
-    ntText = 49153
-    ntSoftBreak = 49154
-    ntLineBreak = 49155
-    ntCode = 49156
-    ntHtmlInline = 49157
-    ntCustomInline = 49158
-    ntEmph = 49159
-    ntStrong = 49160
-    ntLink = 49161
-    ntImage = 49162
-    ntFootnoteReference = 49163
+    ntText =              cmarkNodeTypeInline or 0x0001
+    ntSoftBreak =         cmarkNodeTypeInline or 0x0002
+    ntLineBreak =         cmarkNodeTypeInline or 0x0003
+    ntCode =              cmarkNodeTypeInline or 0x0004
+    ntHtmlInline =        cmarkNodeTypeInline or 0x0005
+    ntCustomInline =      cmarkNodeTypeInline or 0x0006
+    ntEmph =              cmarkNodeTypeInline or 0x0007
+    ntStrong =            cmarkNodeTypeInline or 0x0008
+    ntLink =              cmarkNodeTypeInline or 0x0009
+    ntImage =             cmarkNodeTypeInline or 0x000a
+    ntFootnoteReference = cmarkNodeTypeInline or 0x000b
 
   ListType* {.size: sizeof(cuint).} = enum
     ltNoList
