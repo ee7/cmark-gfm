@@ -91,13 +91,6 @@ const
 
 {.push cdecl, raises: [], gcsafe.}
 
-func cmarkNodeGetHeadingLevel*(node: NodePtr): cint {.
-    importc: "cmark_node_get_heading_level".}
-
-func cmarkNodeSetHeadingLevel*(node: NodePtr,
-                               level: cint): cint {.
-    importc: "cmark_node_set_heading_level".}
-
 func cmarkMarkdownToHtml*(text: cstring,
                           len: culong,
                           options: cint): cstring {.
@@ -210,6 +203,13 @@ func cmarkNodeGetLiteral*(node: NodePtr): cstring {.
 func cmarkNodeSetLiteral*(node: NodePtr,
                           content: cstring): cint {.
     importc: "cmark_node_set_literal".}
+
+func cmarkNodeGetHeadingLevel*(node: NodePtr): cint {.
+    importc: "cmark_node_get_heading_level".}
+
+func cmarkNodeSetHeadingLevel*(node: NodePtr,
+                               level: cint): cint {.
+    importc: "cmark_node_set_heading_level".}
 
 func cmarkNodeGetListType*(node: NodePtr): ListType {.
     importc: "cmark_node_get_list_type".}
