@@ -1,21 +1,76 @@
-import std/os
+from std/os import `/`, fileExists, parentDir
 from system/ansi_c import c_free
 export c_free
 
 const cmarkDir = currentSourcePath().parentDir().parentDir().parentDir() / "cmark-gfm"
-const libPath = cmarkDir / "build" / "src" / "libcmark-gfm.a"
-const libPath2 = cmarkDir / "build" / "extensions" / "libcmark-gfm-extensions.a"
 
 static:
-  if not fileExists(libPath) or not fileExists(libPath2):
-    echo "running make..."
-    let (outp, errC) = gorgeEx("make --directory=" & cmarkDir)
-    if errC != 0:
-      echo outp
-      quit 1
+  const buildDir = cmarkDir / "build" / "src"
+  const files = [
+    "cmark-gfm_export.h",
+    "cmark-gfm_version.h",
+    "config.h",
+  ]
 
-{.passL: libPath2.}
-{.passL: libPath.}
+  for f in files:
+    if not fileExists(buildDir / f):
+      echo "running `make` for cmark-gfm..."
+      let (outp, errC) = gorgeEx("make --directory=" & cmarkDir)
+      if errC != 0:
+        echo outp
+        quit 1
+      break
+
+{.passC: "-I" & cmarkDir / "build" / "src".}
+{.passC: "-I" & cmarkDir / "src".}
+# Compile every upstream .c file in the extensions directory and src directory,
+# apart from `src/main.c`.
+#
+# Hardcode the below lines, rather than generating them at compile time by
+# walking directories, because:
+#
+# - It avoids a macro.
+#
+# - The list of files will rarely change.
+#
+# - It's easier to verify that every expected file is present.
+#
+# - If the user adds their own .c file (for example, in the extensions
+#   directory), the user should be responsible for compiling it.
+{.compile: cmarkDir / "extensions" / "autolink.c".}
+{.compile: cmarkDir / "extensions" / "core-extensions.c".}
+{.compile: cmarkDir / "extensions" / "ext_scanners.c".}
+{.compile: cmarkDir / "extensions" / "strikethrough.c".}
+{.compile: cmarkDir / "extensions" / "table.c".}
+{.compile: cmarkDir / "extensions" / "tagfilter.c".}
+{.compile: cmarkDir / "extensions" / "tasklist.c".}
+{.compile: cmarkDir / "src" / "arena.c".}
+{.compile: cmarkDir / "src" / "blocks.c".}
+{.compile: cmarkDir / "src" / "buffer.c".}
+{.compile: cmarkDir / "src" / "cmark.c".}
+{.compile: cmarkDir / "src" / "cmark_ctype.c".}
+{.compile: cmarkDir / "src" / "commonmark.c".}
+{.compile: cmarkDir / "src" / "footnotes.c".}
+{.compile: cmarkDir / "src" / "houdini_href_e.c".}
+{.compile: cmarkDir / "src" / "houdini_html_e.c".}
+{.compile: cmarkDir / "src" / "houdini_html_u.c".}
+{.compile: cmarkDir / "src" / "html.c".}
+{.compile: cmarkDir / "src" / "inlines.c".}
+{.compile: cmarkDir / "src" / "iterator.c".}
+{.compile: cmarkDir / "src" / "latex.c".}
+{.compile: cmarkDir / "src" / "linked_list.c".}
+{.compile: cmarkDir / "src" / "man.c".}
+{.compile: cmarkDir / "src" / "map.c".}
+{.compile: cmarkDir / "src" / "node.c".}
+{.compile: cmarkDir / "src" / "plaintext.c".}
+{.compile: cmarkDir / "src" / "plugin.c".}
+{.compile: cmarkDir / "src" / "references.c".}
+{.compile: cmarkDir / "src" / "registry.c".}
+{.compile: cmarkDir / "src" / "render.c".}
+{.compile: cmarkDir / "src" / "scanners.c".}
+{.compile: cmarkDir / "src" / "syntax_extension.c".}
+{.compile: cmarkDir / "src" / "utf8.c".}
+{.compile: cmarkDir / "src" / "xml.c".}
 
 type
   NodeType* {.size: sizeof(cuint).} = enum
