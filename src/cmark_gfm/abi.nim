@@ -176,10 +176,10 @@ func cmarkLlistAppend*(mem: MemPtr,
 
 func cmarkLlistFreeFull*(mem: MemPtr,
                          head: LlistPtr,
-                         freefunc: proc (a0: MemPtr,
+                         freeFunc: proc (a0: MemPtr,
                                          a1: pointer): void {.cdecl.}): void {.
     importc: "cmark_llist_free_full".}
-  ## Frees the list starting with `head`, calling `freefunc` with the data
+  ## Frees the list starting with `head`, calling `freeFunc` with the data
   ## pointer of each of its elements.
 
 func cmarkLlistFree*(mem: MemPtr,
@@ -275,10 +275,10 @@ func cmarkIterGetRoot*(iter: IterPtr): NodePtr {.
 
 func cmarkIterReset*(iter: IterPtr,
                      current: NodePtr,
-                     eventtype: EventType): void {.
+                     eventType: EventType): void {.
     importc: "cmark_iter_reset".}
   ## Resets the iterator so that the current node is `current` and the event
-  ## type is `eventtype`. The new current node must be a descendant of the
+  ## type is `eventType`. The new current node must be a descendant of the
   ## root node or the root node itself.
 
 
@@ -289,13 +289,13 @@ func cmarkNodeGetUserData*(node: NodePtr): pointer {.
   ## Returns the user data of `node`.
 
 func cmarkNodeSetUserData*(node: NodePtr,
-                           userdata: pointer): cint {.
+                           userData: pointer): cint {.
     importc: "cmark_node_set_user_data".}
   ## Sets arbitrary user data for `node`.
   ## Returns 1 on success, 0 on failure.
 
 func cmarkNodeSetUserDataFreeFunc*(node: NodePtr,
-                                   freefunc: proc (a0: MemPtr,
+                                   freeFunc: proc (a0: MemPtr,
                                                    a1: pointer): void {.cdecl.}): cint {.
     importc: "cmark_node_set_user_data_free_func".}
   ## Sets free function for user data.
@@ -437,7 +437,7 @@ func cmarkNodeGetOnEnter*(node: NodePtr): cstring {.
   ## Returns NULL if called on a non-custom node.
 
 func cmarkNodeSetOnEnter*(node: NodePtr,
-                          onenter: cstring): cint {.
+                          onEnter: cstring): cint {.
     importc: "cmark_node_set_on_enter".}
   ## Sets the literal text to render "on enter" for a custom `node`.
   ## Any children of the node will be rendered after this text.
@@ -450,7 +450,7 @@ func cmarkNodeGetOnExit*(node: NodePtr): cstring {.
   ## Returns NULL if called on a non-custom node.
 
 func cmarkNodeSetOnExit*(node: NodePtr,
-                         onexit: cstring): cint {.
+                         onExit: cstring): cint {.
     importc: "cmark_node_set_on_exit".}
   ## Sets the literal text to render "on exit" for a custom `node`.
   ## Any children of the node will be rendered before this text.
@@ -492,10 +492,10 @@ func cmarkNodeInsertAfter*(node: NodePtr,
   ## Inserts `sibling` after `node`.
   ## Returns 1 on success, 0 on failure.
 
-func cmarkNodeReplace*(oldnode: NodePtr,
-                       newnode: NodePtr): cint {.
+func cmarkNodeReplace*(oldNode: NodePtr,
+                       newNode: NodePtr): cint {.
     importc: "cmark_node_replace".}
-  ## Replaces `oldnode` with `newnode` and unlinks `oldnode` (but does not free
+  ## Replaces `oldnode` with `newNode` and unlinks `oldNode` (but does not free
   ## its memory).
   ## Returns 1 on success, 0 on failure.
 
