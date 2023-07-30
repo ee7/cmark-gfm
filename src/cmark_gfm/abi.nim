@@ -45,27 +45,16 @@ type
   structiocodecvt* = distinct object
   structcmarknode* = distinct object
   structiomarker* = distinct object
-  cmarknodetype* = enumcmarknodetype
-  cmarklisttype* = enumcmarklisttype
-  cmarkdelimtype* = enumcmarkdelimtype
-  cmarknode* = structcmarknode
-  cmarkparser* = structcmarkparser
-  cmarkiter* = structcmarkiter
-  cmarksyntaxextension* = structcmarksyntaxextension
 
   structcmarkmem* {.pure, inheritable, bycopy.} = object
     calloc*: proc (a0: culong, a1: culong): pointer {.cdecl.}
     realloc*: proc (a0: pointer, a1: culong): pointer {.cdecl.}
     free*: proc (a0: pointer): void {.cdecl.}
 
-  cmarkmem* = structcmarkmem
-  cmarkfreefunc* = proc (a0: ptr structcmarkmem, a1: pointer): void {.cdecl.}
   structcmarkllist* {.pure, inheritable, bycopy.} = object
     next*: ptr structcmarkllist
     data*: pointer
 
-  cmarkllist* = structcmarkllist
-  cmarkeventtype* = enumcmarkeventtype
   structiofile* {.pure, inheritable, bycopy.} = object
     internalflags*: cint
     internalioreadptr*: cstring
@@ -96,8 +85,6 @@ type
     compilerpad5*: culong
     internalmode*: cint
     internalunused2*: array[20'i64, cschar]
-
-  bufsizet* = cint
 
 const
   CmarkNodeTypePresent* = 32768
