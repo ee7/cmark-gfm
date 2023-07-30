@@ -76,8 +76,8 @@ type
   Mem* {.pure, inheritable, bycopy.} = object
     ## Defines the memory allocation functions to be used by CMark when parsing
     ## and allocating a document tree
-    calloc*: proc (a0: culong, a1: culong): pointer {.cdecl.}
-    realloc*: proc (a0: pointer, a1: culong): pointer {.cdecl.}
+    calloc*: proc (a0: csize_t, a1: csize_t): pointer {.cdecl.}
+    realloc*: proc (a0: pointer, a1: csize_t): pointer {.cdecl.}
     free*: proc (a0: pointer): void {.cdecl.}
   MemPtr* = ptr Mem
 
@@ -140,7 +140,7 @@ type
 # Simple interface
 
 func cmarkMarkdownToHtml*(text: cstring,
-                          len: culong,
+                          len: csize_t,
                           options: cint): cstring {.
     importc: "cmark_markdown_to_html".}
   ## Converts `text` (assumed to be a UTF-8 encoded string with length `len`)
@@ -537,7 +537,7 @@ func cmarkParserFree*(parser: ParserPtr): void {.
 
 func cmarkParserFeed*(parser: ParserPtr,
                       buffer: cstring,
-                      len: culong): void {.
+                      len: csize_t): void {.
     importc: "cmark_parser_feed".}
   ## Feeds a string of length `len` to `parser`.
 
@@ -546,7 +546,7 @@ func cmarkParserFinish*(parser: ParserPtr): NodePtr {.
   ## Finish parsing and return a pointer to a tree of nodes.
 
 func cmarkParseDocument*(buffer: cstring,
-                         len: culong,
+                         len: csize_t,
                          options: cint): NodePtr {.
     importc: "cmark_parse_document".}
   ## Parses a CommonMark document in `buffer` of length `len`.
