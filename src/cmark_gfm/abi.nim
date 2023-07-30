@@ -72,10 +72,13 @@ type
 
   structcmarksyntaxextension* = distinct object
 
-  structcmarkmem* {.pure, inheritable, bycopy.} = object
+  Mem* {.pure, inheritable, bycopy.} = object
+    ## Defines the memory allocation functions to be used by CMark when parsing
+    ## and allocating a document tree
     calloc*: proc (a0: culong, a1: culong): pointer {.cdecl.}
     realloc*: proc (a0: pointer, a1: culong): pointer {.cdecl.}
     free*: proc (a0: pointer): void {.cdecl.}
+  MemPtr* = ptr Mem
 
   structcmarkllist* {.pure, inheritable, bycopy.} = object
     next*: ptr structcmarkllist
@@ -105,26 +108,26 @@ func cmarkMarkdownToHtml*(text: cstring,
                           options: cint): cstring {.
     importc: "cmark_markdown_to_html".}
 
-func cmarkGetDefaultMemAllocator*: ptr structcmarkmem {.
+func cmarkGetDefaultMemAllocator*: MemPtr {.
     importc: "cmark_get_default_mem_allocator".}
 
-func cmarkGetArenaMemAllocator*: ptr structcmarkmem {.
+func cmarkGetArenaMemAllocator*: MemPtr {.
     importc: "cmark_get_arena_mem_allocator".}
 
 func cmarkArenaReset*: void {.importc: "cmark_arena_reset".}
 
-func cmarkLlistAppend*(mem: ptr structcmarkmem,
+func cmarkLlistAppend*(mem: MemPtr,
                        head: ptr structcmarkllist,
                        data: pointer): ptr structcmarkllist {.
     importc: "cmark_llist_append".}
 
-func cmarkLlistFreeFull*(mem: ptr structcmarkmem,
+func cmarkLlistFreeFull*(mem: MemPtr,
                          head: ptr structcmarkllist,
-                         freefunc: proc (a0: ptr structcmarkmem,
+                         freefunc: proc (a0: MemPtr,
                                          a1: pointer): void {.cdecl.}): void {.
     importc: "cmark_llist_free_full".}
 
-func cmarkLlistFree*(mem: ptr structcmarkmem,
+func cmarkLlistFree*(mem: MemPtr,
                      head: ptr structcmarkllist): void {.
     importc: "cmark_llist_free".}
 
@@ -132,7 +135,7 @@ func cmarkNodeNew*(typearg: NodeType): NodePtr {.
     importc: "cmark_node_new".}
 
 func cmarkNodeNewWithMem*(typearg: NodeType,
-                          mem: ptr structcmarkmem): NodePtr {.
+                          mem: MemPtr): NodePtr {.
     importc: "cmark_node_new_with_mem".}
 
 func cmarkNodeNewWithExt*(typearg: NodeType,
@@ -140,7 +143,7 @@ func cmarkNodeNewWithExt*(typearg: NodeType,
     importc: "cmark_node_new_with_ext".}
 
 func cmarkNodeNewWithMemAndExt*(typearg: NodeType,
-                                mem: ptr structcmarkmem,
+                                mem: MemPtr,
                                 extension: ptr structcmarksyntaxextension): NodePtr {.
     importc: "cmark_node_new_with_mem_and_ext".}
 
@@ -196,7 +199,7 @@ func cmarkNodeSetUserData*(node: NodePtr,
     importc: "cmark_node_set_user_data".}
 
 func cmarkNodeSetUserDataFreeFunc*(node: NodePtr,
-                                   freefunc: proc (a0: ptr structcmarkmem,
+                                   freefunc: proc (a0: MemPtr,
                                                    a1: pointer): void {.cdecl.}): cint {.
     importc: "cmark_node_set_user_data_free_func".}
 
@@ -341,7 +344,7 @@ func cmarkParserNew*(options: cint): ParserPtr {.
     importc: "cmark_parser_new".}
 
 func cmarkParserNewWithMem*(options: cint,
-                            mem: ptr structcmarkmem): ParserPtr {.
+                            mem: MemPtr): ParserPtr {.
     importc: "cmark_parser_new_with_mem".}
 
 func cmarkParserFree*(parser: ParserPtr): void {.
@@ -366,7 +369,7 @@ func cmarkRenderXml*(root: NodePtr,
 
 func cmarkRenderXmlWithMem*(root: NodePtr,
                             options: cint,
-                            mem: ptr structcmarkmem): cstring {.
+                            mem: MemPtr): cstring {.
     importc: "cmark_render_xml_with_mem".}
 
 func cmarkRenderHtml*(root: NodePtr,
@@ -377,7 +380,7 @@ func cmarkRenderHtml*(root: NodePtr,
 func cmarkRenderHtmlWithMem*(root: NodePtr,
                              options: cint,
                              extensions: ptr structcmarkllist,
-                             mem: ptr structcmarkmem): cstring {.
+                             mem: MemPtr): cstring {.
     importc: "cmark_render_html_with_mem".}
 
 func cmarkRenderMan*(root: NodePtr,
@@ -388,7 +391,7 @@ func cmarkRenderMan*(root: NodePtr,
 func cmarkRenderManWithMem*(root: NodePtr,
                             options: cint,
                             width: cint,
-                            mem: ptr structcmarkmem): cstring {.
+                            mem: MemPtr): cstring {.
     importc: "cmark_render_man_with_mem".}
 
 func cmarkRenderCommonmark*(root: NodePtr,
@@ -399,7 +402,7 @@ func cmarkRenderCommonmark*(root: NodePtr,
 func cmarkRenderCommonmarkWithMem*(root: NodePtr,
                                    options: cint,
                                    width: cint,
-                                   mem: ptr structcmarkmem): cstring {.
+                                   mem: MemPtr): cstring {.
     importc: "cmark_render_commonmark_with_mem".}
 
 func cmarkRenderPlaintext*(root: NodePtr,
@@ -410,7 +413,7 @@ func cmarkRenderPlaintext*(root: NodePtr,
 func cmarkRenderPlaintextWithMem*(root: NodePtr,
                                   options: cint,
                                   width: cint,
-                                  mem: ptr structcmarkmem): cstring {.
+                                  mem: MemPtr): cstring {.
     importc: "cmark_render_plaintext_with_mem".}
 
 func cmarkRenderLatex*(root: NodePtr,
@@ -421,7 +424,7 @@ func cmarkRenderLatex*(root: NodePtr,
 func cmarkRenderLatexWithMem*(root: NodePtr,
                               options: cint,
                               width: cint,
-                              mem: ptr structcmarkmem): cstring {.
+                              mem: MemPtr): cstring {.
     importc: "cmark_render_latex_with_mem".}
 
 func cmarkVersion*: cint {.importc: "cmark_version".}
