@@ -109,7 +109,7 @@ var
   CmarkNodeLastBlock* {.importc: "CMARK_NODE_LAST_BLOCK".}: enumcmarknodetype
   CmarkNodeLastInline* {.importc: "CMARK_NODE_LAST_INLINE".}: enumcmarknodetype
 
-{.push cdecl.}
+{.push cdecl, raises: [], gcsafe.}
 
 proc cmarkNodeGetHeadingLevel*(node: ptr structcmarknode): cint {.
     importc: "cmark_node_get_heading_level".}
