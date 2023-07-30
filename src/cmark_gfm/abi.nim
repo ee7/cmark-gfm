@@ -70,7 +70,8 @@ type
   Parser* = distinct object ## `struct cmark_parser`
   ParserPtr* = ptr Parser ## `cmark_parser*`
 
-  structcmarksyntaxextension* = distinct object
+  SyntaxExtension* = distinct object ## `struct cmark_syntax_extension`
+  SyntaxExtensionPtr* = ptr SyntaxExtension ## `cmark_syntax_extension*`
 
   Mem* {.pure, inheritable, bycopy.} = object
     ## Defines the memory allocation functions to be used by CMark when parsing
@@ -140,12 +141,12 @@ func cmarkNodeNewWithMem*(typearg: NodeType,
     importc: "cmark_node_new_with_mem".}
 
 func cmarkNodeNewWithExt*(typearg: NodeType,
-                          extension: ptr structcmarksyntaxextension): NodePtr {.
+                          extension: SyntaxExtensionPtr): NodePtr {.
     importc: "cmark_node_new_with_ext".}
 
 func cmarkNodeNewWithMemAndExt*(typearg: NodeType,
                                 mem: MemPtr,
-                                extension: ptr structcmarksyntaxextension): NodePtr {.
+                                extension: SyntaxExtensionPtr): NodePtr {.
     importc: "cmark_node_new_with_mem_and_ext".}
 
 func cmarkNodeFree*(node: NodePtr): void {.
