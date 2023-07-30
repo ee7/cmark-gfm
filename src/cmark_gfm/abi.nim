@@ -80,9 +80,10 @@ type
     free*: proc (a0: pointer): void {.cdecl.}
   MemPtr* = ptr Mem
 
-  structcmarkllist* {.pure, inheritable, bycopy.} = object
-    next*: ptr structcmarkllist
+  Llist* {.pure, inheritable, bycopy.} = object ## A singly linked list.
+    next*: LlistPtr
     data*: pointer
+  LlistPtr* = ptr Llist
 
 const
   CmarkNodeTypePresent* = 32768
@@ -117,18 +118,18 @@ func cmarkGetArenaMemAllocator*: MemPtr {.
 func cmarkArenaReset*: void {.importc: "cmark_arena_reset".}
 
 func cmarkLlistAppend*(mem: MemPtr,
-                       head: ptr structcmarkllist,
-                       data: pointer): ptr structcmarkllist {.
+                       head: LlistPtr,
+                       data: pointer): LlistPtr {.
     importc: "cmark_llist_append".}
 
 func cmarkLlistFreeFull*(mem: MemPtr,
-                         head: ptr structcmarkllist,
+                         head: LlistPtr,
                          freefunc: proc (a0: MemPtr,
                                          a1: pointer): void {.cdecl.}): void {.
     importc: "cmark_llist_free_full".}
 
 func cmarkLlistFree*(mem: MemPtr,
-                     head: ptr structcmarkllist): void {.
+                     head: LlistPtr): void {.
     importc: "cmark_llist_free".}
 
 func cmarkNodeNew*(typearg: NodeType): NodePtr {.
@@ -374,12 +375,12 @@ func cmarkRenderXmlWithMem*(root: NodePtr,
 
 func cmarkRenderHtml*(root: NodePtr,
                       options: cint,
-                      extensions: ptr structcmarkllist): cstring {.
+                      extensions: LlistPtr): cstring {.
     importc: "cmark_render_html".}
 
 func cmarkRenderHtmlWithMem*(root: NodePtr,
                              options: cint,
-                             extensions: ptr structcmarkllist,
+                             extensions: LlistPtr,
                              mem: MemPtr): cstring {.
     importc: "cmark_render_html_with_mem".}
 
