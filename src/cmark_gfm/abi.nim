@@ -2,7 +2,7 @@ from std/os import `/`, fileExists, parentDir
 from system/ansi_c import c_free
 export c_free
 
-const cmarkDir = currentSourcePath().parentDir().parentDir().parentDir() / "cmark-gfm"
+const cmarkDir = currentSourcePath().parentDir() / "libcmark-gfm"
 
 static:
   const buildDir = cmarkDir / "build" / "src"
